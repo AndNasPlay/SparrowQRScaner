@@ -1,0 +1,1 @@
+# SparrowQRScaner
