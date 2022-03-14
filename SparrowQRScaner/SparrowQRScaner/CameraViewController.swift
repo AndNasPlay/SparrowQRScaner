@@ -7,13 +7,19 @@
 
 import UIKit
 import AVFoundation
+import CoreImage
 
-class CameraViewController: UIViewController {
+class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
 
 	private(set) lazy var qrCodeButtonWidthAndHeightAnchor: CGFloat = 60.0
 
 	var videoStream = AVCaptureVideoPreviewLayer()
-	let session = AVCaptureSession()
+
+	var session = AVCaptureSession()
+
+	private(set) lazy var qrString: String = ""
+
+	private(set) lazy var popVC = PopoverTableViewController()
 
 	private(set) lazy var qrCodeButton: UIButton = {
 		let button = UIButton(type: .custom)
@@ -30,11 +36,20 @@ class CameraViewController: UIViewController {
 		return view
 	}()
 
+	private(set) lazy var qrCodeView: SquareView = {
+		let view = SquareView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+		return view
+	}()
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		self.view.backgroundColor = .white
 		self.view.addSubview(videoView)
 		self.view.addSubview(qrCodeButton)
+		self.view.addSubview(qrCodeView)
+
+		self.qrCodeButton.isHidden = true
+		self.qrCodeView.isHidden = true
 
 		constraintsInit()
 		setupGestures()
@@ -56,11 +71,15 @@ class CameraViewController: UIViewController {
 			session.addInput(input)
 		}
 		catch {
-			print("error")
+			print("input error")
 		}
 
 		let output = AVCaptureMetadataOutput()
 		session.addOutput(output)
+
+		output.setMetadataObjectsDelegate(self,
+										  queue: DispatchQueue.main)
+		output.metadataObjectTypes = [AVMetadataObject.ObjectType.qr]
 
 		videoStream = AVCaptureVideoPreviewLayer(session: session)
 		videoStream.videoGravity = AVLayerVideoGravity.resizeAspectFill
@@ -71,7 +90,7 @@ class CameraViewController: UIViewController {
 	}
 
 	@objc func handleTapQRCodeButtonTouchUpInseide() {
-		let popVC = PopoverTableViewController()
+		popVC.qrTableViewHeader = self.qrString
 		popVC.modalPresentationStyle = .popover
 
 		let popoverVC = popVC.popoverPresentationController
@@ -85,6 +104,29 @@ class CameraViewController: UIViewController {
 		popVC.preferredContentSize = CGSize(width: 300.0, height: 50.0)
 
 		self.present(popVC, animated: true)
+	}
+
+	func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+		guard metadataObjects.isEmpty == false else {
+			self.qrCodeButton.isHidden = true
+			self.qrCodeView.isHidden = true
+			popVC.dismiss(animated: true, completion: nil)
+			self.qrString = ""
+			return
+
+		}
+
+		if let object = metadataObjects.first as? AVMetadataMachineReadableCodeObject {
+			if object.type == AVMetadataObject.ObjectType.qr {
+				self.qrCodeButton.isHidden = false
+				self.qrCodeView.isHidden = false
+				self.qrString = object.stringValue ?? ""
+				let getFrameQrCode = videoStream.transformedMetadataObject(for: object)
+				guard let frameQrCode = getFrameQrCode?.bounds else { return }
+				self.qrCodeView.frame = frameQrCode
+			}
+		}
+
 	}
 
 	func constraintsInit() {
