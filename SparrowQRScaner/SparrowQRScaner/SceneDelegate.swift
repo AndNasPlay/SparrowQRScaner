@@ -19,10 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			guard let windowScene = (scene as? UIWindowScene) else { return }
 
 			window = UIWindow(frame: UIScreen.main.bounds)
-			let newController = MainViewController()
 			let cameraController = CameraViewController()
-			let navController = UINavigationController()
-			navController.addChild(newController)
 			window?.rootViewController = cameraController
 			window?.makeKeyAndVisible()
 			window?.windowScene = windowScene

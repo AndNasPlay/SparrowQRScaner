@@ -7,12 +7,12 @@
 
 import UIKit
 
-class QRCodeView: UIView {
+final class QRCodeView: UIView {
 
-	var radius: CGFloat = 10.0
-	var lineLength: CGFloat = 30
-	var lineWidth: CGFloat = 5.0
-	var lineColor: UIColor = UIColor.yellowMain
+	let radius: CGFloat = 10.0
+	let lineLength: CGFloat = 0.08
+	let lineWidth: CGFloat = 5.0
+	let lineColor: UIColor = UIColor.yellowMain
 
 	var shapeLayer: CAShapeLayer!
 
@@ -30,7 +30,7 @@ class QRCodeView: UIView {
 		commonInit()
 	}
 
-	func commonInit() -> Void {
+	private func commonInit() -> Void {
 		shapeLayer = self.layer as? CAShapeLayer
 		shapeLayer.fillColor = UIColor.clear.cgColor
 		shapeLayer.lineCap = .round
@@ -42,7 +42,7 @@ class QRCodeView: UIView {
 		shapeLayer.strokeColor = lineColor.cgColor
 		shapeLayer.lineWidth = lineWidth
 
-		let pth = UIBezierPath()
+		let bezierPath = UIBezierPath()
 
 		var ptA: CGPoint = .zero
 		var ptB: CGPoint = .zero
@@ -54,7 +54,7 @@ class QRCodeView: UIView {
 		startAngle = .pi
 
 		ptA.x = bounds.minX
-		ptA.y = bounds.minY + radius + lineLength
+		ptA.y = bounds.minY + radius + self.bounds.height*lineLength
 
 		ptB.x = bounds.minX
 		ptB.y = bounds.minY + radius
@@ -62,24 +62,24 @@ class QRCodeView: UIView {
 		ptC.x = bounds.minX + radius
 		ptC.y = bounds.minY
 
-		ptD.x = bounds.minX + radius + lineLength
+		ptD.x = bounds.minX + radius + self.bounds.width*lineLength
 		ptD.y = bounds.minY
 
 		arcCenter.x = ptC.x
 		arcCenter.y = ptB.y
 
-		pth.move(to: ptA)
-		pth.addLine(to: ptB)
-		pth.addArc(withCenter: arcCenter,
+		bezierPath.move(to: ptA)
+		bezierPath.addLine(to: ptB)
+		bezierPath.addArc(withCenter: arcCenter,
 				   radius: radius,
 				   startAngle: startAngle,
 				   endAngle: startAngle + .pi * 0.5,
 				   clockwise: true)
-		pth.addLine(to: ptD)
+		bezierPath.addLine(to: ptD)
 
 		startAngle += (.pi * 0.5)
 
-		ptA.x = bounds.maxX - (radius + lineLength)
+		ptA.x = bounds.maxX - (radius + self.bounds.width*lineLength)
 		ptA.y = bounds.minY
 
 		ptB.x = bounds.maxX - radius
@@ -89,25 +89,25 @@ class QRCodeView: UIView {
 		ptC.y = bounds.minY + radius
 
 		ptD.x = bounds.maxX
-		ptD.y = bounds.minY + radius + lineLength
+		ptD.y = bounds.minY + radius + self.bounds.height*lineLength
 
 		arcCenter.x = ptB.x
 		arcCenter.y = ptC.y
 
-		pth.move(to: ptA)
-		pth.addLine(to: ptB)
-		pth.addArc(withCenter: arcCenter,
+		bezierPath.move(to: ptA)
+		bezierPath.addLine(to: ptB)
+		bezierPath.addArc(withCenter: arcCenter,
 				   radius: radius, startAngle:
 					startAngle, endAngle:
 					startAngle + .pi * 0.5,
 				   clockwise: true)
-		pth.addLine(to: ptD)
+		bezierPath.addLine(to: ptD)
 
 
 		startAngle += (.pi * 0.5)
 
 		ptA.x = bounds.maxX
-		ptA.y = bounds.maxY - (radius + lineLength)
+		ptA.y = bounds.maxY - (radius + self.bounds.width*lineLength)
 
 		ptB.x = bounds.maxX
 		ptB.y = bounds.maxY - radius
@@ -115,24 +115,24 @@ class QRCodeView: UIView {
 		ptC.x = bounds.maxX - radius
 		ptC.y = bounds.maxY
 
-		ptD.x = bounds.maxX - (radius + lineLength)
+		ptD.x = bounds.maxX - (radius + self.bounds.height*lineLength)
 		ptD.y = bounds.maxY
 
 		arcCenter.x = ptC.x
 		arcCenter.y = ptB.y
-		pth.move(to: ptA)
-		pth.addLine(to: ptB)
-		pth.addArc(withCenter: arcCenter,
+		bezierPath.move(to: ptA)
+		bezierPath.addLine(to: ptB)
+		bezierPath.addArc(withCenter: arcCenter,
 				   radius: radius,
 				   startAngle: startAngle,
 				   endAngle: startAngle + .pi * 0.5,
 				   clockwise: true)
 
-		pth.addLine(to: ptD)
+		bezierPath.addLine(to: ptD)
 
 		startAngle += (.pi * 0.5)
 
-		ptA.x = bounds.minX + radius + lineLength
+		ptA.x = bounds.minX + radius + self.bounds.width*lineLength
 		ptA.y = bounds.maxY
 
 		ptB.x = bounds.minX + radius
@@ -142,21 +142,21 @@ class QRCodeView: UIView {
 		ptC.y = bounds.maxY - radius
 
 		ptD.x = bounds.minX
-		ptD.y = bounds.maxY - (radius + lineLength)
+		ptD.y = bounds.maxY - (radius + self.bounds.height*lineLength)
 
 		arcCenter.x = ptB.x
 		arcCenter.y = ptC.y
 
-		pth.move(to: ptA)
-		pth.addLine(to: ptB)
-		pth.addArc(withCenter: arcCenter,
+		bezierPath.move(to: ptA)
+		bezierPath.addLine(to: ptB)
+		bezierPath.addArc(withCenter: arcCenter,
 				   radius: radius, startAngle:
 					startAngle,
 				   endAngle: startAngle + .pi * 0.5,
 				   clockwise: true)
-		pth.addLine(to: ptD)
+		bezierPath.addLine(to: ptD)
 
-		shapeLayer.path = pth.cgPath
+		shapeLayer.path = bezierPath.cgPath
 	}
 
 }

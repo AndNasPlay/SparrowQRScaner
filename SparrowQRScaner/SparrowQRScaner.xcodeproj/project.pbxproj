@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		167BE71C27DE4684009B20A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167BE71B27DE4684009B20A2 /* AppDelegate.swift */; };
 		167BE71E27DE4684009B20A2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167BE71D27DE4684009B20A2 /* SceneDelegate.swift */; };
-		167BE72027DE4684009B20A2 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167BE71F27DE4684009B20A2 /* MainViewController.swift */; };
 		167BE72527DE4686009B20A2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 167BE72427DE4686009B20A2 /* Assets.xcassets */; };
 		167BE72827DE4686009B20A2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 167BE72627DE4686009B20A2 /* LaunchScreen.storyboard */; };
 		167BE73027DE4B31009B20A2 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167BE72F27DE4B31009B20A2 /* CameraViewController.swift */; };
@@ -17,15 +16,12 @@
 		167BE73727DE85BD009B20A2 /* PopoverTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167BE73627DE85BD009B20A2 /* PopoverTableViewCell.swift */; };
 		167BE73927DE9C9F009B20A2 /* UIcolorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167BE73827DE9C9F009B20A2 /* UIcolorExtension.swift */; };
 		167BE73B27DEA304009B20A2 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167BE73A27DEA304009B20A2 /* QRCodeView.swift */; };
-		167BE73D27DEA6FC009B20A2 /* QRCodeNewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167BE73C27DEA6FC009B20A2 /* QRCodeNewView.swift */; };
-		167BE73F27DEB566009B20A2 /* AnotherQrCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167BE73E27DEB566009B20A2 /* AnotherQrCodeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		167BE71827DE4684009B20A2 /* SparrowQRScaner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SparrowQRScaner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		167BE71B27DE4684009B20A2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		167BE71D27DE4684009B20A2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		167BE71F27DE4684009B20A2 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		167BE72427DE4686009B20A2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		167BE72727DE4686009B20A2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		167BE72927DE4686009B20A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -34,8 +30,6 @@
 		167BE73627DE85BD009B20A2 /* PopoverTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverTableViewCell.swift; sourceTree = "<group>"; };
 		167BE73827DE9C9F009B20A2 /* UIcolorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIcolorExtension.swift; sourceTree = "<group>"; };
 		167BE73A27DEA304009B20A2 /* QRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
-		167BE73C27DEA6FC009B20A2 /* QRCodeNewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeNewView.swift; sourceTree = "<group>"; };
-		167BE73E27DEB566009B20A2 /* AnotherQrCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnotherQrCodeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,19 +62,13 @@
 		167BE71A27DE4684009B20A2 /* SparrowQRScaner */ = {
 			isa = PBXGroup;
 			children = (
+				167BE74127E103EA009B20A2 /* Extensions */,
+				167BE74027E103D6009B20A2 /* ViewControllers */,
 				167BE71B27DE4684009B20A2 /* AppDelegate.swift */,
 				167BE71D27DE4684009B20A2 /* SceneDelegate.swift */,
-				167BE71F27DE4684009B20A2 /* MainViewController.swift */,
-				167BE72F27DE4B31009B20A2 /* CameraViewController.swift */,
-				167BE73127DE5042009B20A2 /* PopoverTableViewController.swift */,
-				167BE73827DE9C9F009B20A2 /* UIcolorExtension.swift */,
-				167BE73C27DEA6FC009B20A2 /* QRCodeNewView.swift */,
-				167BE73A27DEA304009B20A2 /* QRCodeView.swift */,
-				167BE73327DE8572009B20A2 /* PopoverTableViewCell */,
 				167BE72427DE4686009B20A2 /* Assets.xcassets */,
 				167BE72627DE4686009B20A2 /* LaunchScreen.storyboard */,
 				167BE72927DE4686009B20A2 /* Info.plist */,
-				167BE73E27DEB566009B20A2 /* AnotherQrCodeView.swift */,
 			);
 			path = SparrowQRScaner;
 			sourceTree = "<group>";
@@ -91,6 +79,41 @@
 				167BE73627DE85BD009B20A2 /* PopoverTableViewCell.swift */,
 			);
 			path = PopoverTableViewCell;
+			sourceTree = "<group>";
+		};
+		167BE74027E103D6009B20A2 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				167BE74427E10454009B20A2 /* CameraViewController */,
+				167BE74327E1042A009B20A2 /* PopoverTableViewController */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		167BE74127E103EA009B20A2 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				167BE73827DE9C9F009B20A2 /* UIcolorExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		167BE74327E1042A009B20A2 /* PopoverTableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				167BE73327DE8572009B20A2 /* PopoverTableViewCell */,
+				167BE73127DE5042009B20A2 /* PopoverTableViewController.swift */,
+			);
+			path = PopoverTableViewController;
+			sourceTree = "<group>";
+		};
+		167BE74427E10454009B20A2 /* CameraViewController */ = {
+			isa = PBXGroup;
+			children = (
+				167BE73A27DEA304009B20A2 /* QRCodeView.swift */,
+				167BE72F27DE4B31009B20A2 /* CameraViewController.swift */,
+			);
+			path = CameraViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -163,10 +186,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				167BE72027DE4684009B20A2 /* MainViewController.swift in Sources */,
 				167BE73227DE5042009B20A2 /* PopoverTableViewController.swift in Sources */,
-				167BE73F27DEB566009B20A2 /* AnotherQrCodeView.swift in Sources */,
-				167BE73D27DEA6FC009B20A2 /* QRCodeNewView.swift in Sources */,
 				167BE73927DE9C9F009B20A2 /* UIcolorExtension.swift in Sources */,
 				167BE73027DE4B31009B20A2 /* CameraViewController.swift in Sources */,
 				167BE73B27DEA304009B20A2 /* QRCodeView.swift in Sources */,

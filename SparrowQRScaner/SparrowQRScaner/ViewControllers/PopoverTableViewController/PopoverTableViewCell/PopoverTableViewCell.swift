@@ -14,7 +14,6 @@ class PopoverTableViewCell: UITableViewCell {
 	private(set) lazy var copyLable: UILabel = {
 		let text = UILabel()
 		text.translatesAutoresizingMaskIntoConstraints = false
-		text.textColor = .white
 		text.textAlignment = .left
 		text.numberOfLines = 1
 		text.font = UIFont.systemFont(ofSize: 20.0)
@@ -27,7 +26,7 @@ class PopoverTableViewCell: UITableViewCell {
 		let img = UIImageView()
 		img.translatesAutoresizingMaskIntoConstraints = false
 		img.image = UIImage(systemName: "doc.on.doc")
-		img.tintColor = .white
+		img.tintColor = .imgColor
 		return img
 	}()
 	

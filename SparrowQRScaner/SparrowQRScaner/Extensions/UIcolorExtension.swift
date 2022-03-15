@@ -13,6 +13,5 @@ extension UIColor {
 	// MARK: Main Colors
 
 	static let yellowMain = UIColor(named: "Yellow") ?? .yellow
-
-
+	static let imgColor = UIColor(named: "ImgColor") ?? .white
 }
