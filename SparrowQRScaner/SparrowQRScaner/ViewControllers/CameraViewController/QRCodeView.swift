@@ -44,117 +44,117 @@ final class QRCodeView: UIView {
 
 		let bezierPath = UIBezierPath()
 
-		var ptA: CGPoint = .zero
-		var ptB: CGPoint = .zero
-		var ptC: CGPoint = .zero
-		var ptD: CGPoint = .zero
+		var pointA: CGPoint = .zero
+		var pointB: CGPoint = .zero
+		var pointC: CGPoint = .zero
+		var pointD: CGPoint = .zero
 		var arcCenter: CGPoint = .zero
 		var startAngle: CGFloat = 0
 
 		startAngle = .pi
 
-		ptA.x = bounds.minX
-		ptA.y = bounds.minY + radius + self.bounds.height*lineLength
+		pointA.x = bounds.minX
+		pointA.y = bounds.minY + radius + self.bounds.height*lineLength
 
-		ptB.x = bounds.minX
-		ptB.y = bounds.minY + radius
+		pointB.x = bounds.minX
+		pointB.y = bounds.minY + radius
 
-		ptC.x = bounds.minX + radius
-		ptC.y = bounds.minY
+		pointC.x = bounds.minX + radius
+		pointC.y = bounds.minY
 
-		ptD.x = bounds.minX + radius + self.bounds.width*lineLength
-		ptD.y = bounds.minY
+		pointD.x = bounds.minX + radius + self.bounds.width*lineLength
+		pointD.y = bounds.minY
 
-		arcCenter.x = ptC.x
-		arcCenter.y = ptB.y
+		arcCenter.x = pointC.x
+		arcCenter.y = pointB.y
 
-		bezierPath.move(to: ptA)
-		bezierPath.addLine(to: ptB)
+		bezierPath.move(to: pointA)
+		bezierPath.addLine(to: pointB)
 		bezierPath.addArc(withCenter: arcCenter,
 				   radius: radius,
 				   startAngle: startAngle,
 				   endAngle: startAngle + .pi * 0.5,
 				   clockwise: true)
-		bezierPath.addLine(to: ptD)
+		bezierPath.addLine(to: pointD)
 
 		startAngle += (.pi * 0.5)
 
-		ptA.x = bounds.maxX - (radius + self.bounds.width*lineLength)
-		ptA.y = bounds.minY
+		pointA.x = bounds.maxX - (radius + self.bounds.width*lineLength)
+		pointA.y = bounds.minY
 
-		ptB.x = bounds.maxX - radius
-		ptB.y = bounds.minY
+		pointB.x = bounds.maxX - radius
+		pointB.y = bounds.minY
 
-		ptC.x = bounds.maxX
-		ptC.y = bounds.minY + radius
+		pointC.x = bounds.maxX
+		pointC.y = bounds.minY + radius
 
-		ptD.x = bounds.maxX
-		ptD.y = bounds.minY + radius + self.bounds.height*lineLength
+		pointD.x = bounds.maxX
+		pointD.y = bounds.minY + radius + self.bounds.height*lineLength
 
-		arcCenter.x = ptB.x
-		arcCenter.y = ptC.y
+		arcCenter.x = pointB.x
+		arcCenter.y = pointC.y
 
-		bezierPath.move(to: ptA)
-		bezierPath.addLine(to: ptB)
+		bezierPath.move(to: pointA)
+		bezierPath.addLine(to: pointB)
 		bezierPath.addArc(withCenter: arcCenter,
 				   radius: radius, startAngle:
 					startAngle, endAngle:
 					startAngle + .pi * 0.5,
 				   clockwise: true)
-		bezierPath.addLine(to: ptD)
+		bezierPath.addLine(to: pointD)
 
 
 		startAngle += (.pi * 0.5)
 
-		ptA.x = bounds.maxX
-		ptA.y = bounds.maxY - (radius + self.bounds.width*lineLength)
+		pointA.x = bounds.maxX
+		pointA.y = bounds.maxY - (radius + self.bounds.width*lineLength)
 
-		ptB.x = bounds.maxX
-		ptB.y = bounds.maxY - radius
+		pointB.x = bounds.maxX
+		pointB.y = bounds.maxY - radius
 
-		ptC.x = bounds.maxX - radius
-		ptC.y = bounds.maxY
+		pointC.x = bounds.maxX - radius
+		pointC.y = bounds.maxY
 
-		ptD.x = bounds.maxX - (radius + self.bounds.height*lineLength)
-		ptD.y = bounds.maxY
+		pointD.x = bounds.maxX - (radius + self.bounds.height*lineLength)
+		pointD.y = bounds.maxY
 
-		arcCenter.x = ptC.x
-		arcCenter.y = ptB.y
-		bezierPath.move(to: ptA)
-		bezierPath.addLine(to: ptB)
+		arcCenter.x = pointC.x
+		arcCenter.y = pointB.y
+		bezierPath.move(to: pointA)
+		bezierPath.addLine(to: pointB)
 		bezierPath.addArc(withCenter: arcCenter,
 				   radius: radius,
 				   startAngle: startAngle,
 				   endAngle: startAngle + .pi * 0.5,
 				   clockwise: true)
 
-		bezierPath.addLine(to: ptD)
+		bezierPath.addLine(to: pointD)
 
 		startAngle += (.pi * 0.5)
 
-		ptA.x = bounds.minX + radius + self.bounds.width*lineLength
-		ptA.y = bounds.maxY
+		pointA.x = bounds.minX + radius + self.bounds.width*lineLength
+		pointA.y = bounds.maxY
 
-		ptB.x = bounds.minX + radius
-		ptB.y = bounds.maxY
+		pointB.x = bounds.minX + radius
+		pointB.y = bounds.maxY
 
-		ptC.x = bounds.minX
-		ptC.y = bounds.maxY - radius
+		pointC.x = bounds.minX
+		pointC.y = bounds.maxY - radius
 
-		ptD.x = bounds.minX
-		ptD.y = bounds.maxY - (radius + self.bounds.height*lineLength)
+		pointD.x = bounds.minX
+		pointD.y = bounds.maxY - (radius + self.bounds.height*lineLength)
 
-		arcCenter.x = ptB.x
-		arcCenter.y = ptC.y
+		arcCenter.x = pointB.x
+		arcCenter.y = pointC.y
 
-		bezierPath.move(to: ptA)
-		bezierPath.addLine(to: ptB)
+		bezierPath.move(to: pointA)
+		bezierPath.addLine(to: pointB)
 		bezierPath.addArc(withCenter: arcCenter,
 				   radius: radius, startAngle:
 					startAngle,
 				   endAngle: startAngle + .pi * 0.5,
 				   clockwise: true)
-		bezierPath.addLine(to: ptD)
+		bezierPath.addLine(to: pointD)
 
 		shapeLayer.path = bezierPath.cgPath
 	}

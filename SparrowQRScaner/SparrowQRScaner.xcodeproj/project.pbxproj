@@ -16,6 +16,7 @@
 		167BE73727DE85BD009B20A2 /* PopoverTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167BE73627DE85BD009B20A2 /* PopoverTableViewCell.swift */; };
 		167BE73927DE9C9F009B20A2 /* UIcolorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167BE73827DE9C9F009B20A2 /* UIcolorExtension.swift */; };
 		167BE73B27DEA304009B20A2 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167BE73A27DEA304009B20A2 /* QRCodeView.swift */; };
+		167BE74627E250EA009B20A2 /* ButtonsCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167BE74527E250EA009B20A2 /* ButtonsCameraView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		167BE73627DE85BD009B20A2 /* PopoverTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverTableViewCell.swift; sourceTree = "<group>"; };
 		167BE73827DE9C9F009B20A2 /* UIcolorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIcolorExtension.swift; sourceTree = "<group>"; };
 		167BE73A27DEA304009B20A2 /* QRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
+		167BE74527E250EA009B20A2 /* ButtonsCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsCameraView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				167BE73A27DEA304009B20A2 /* QRCodeView.swift */,
+				167BE74527E250EA009B20A2 /* ButtonsCameraView.swift */,
 				167BE72F27DE4B31009B20A2 /* CameraViewController.swift */,
 			);
 			path = CameraViewController;
@@ -186,6 +189,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				167BE74627E250EA009B20A2 /* ButtonsCameraView.swift in Sources */,
 				167BE73227DE5042009B20A2 /* PopoverTableViewController.swift in Sources */,
 				167BE73927DE9C9F009B20A2 /* UIcolorExtension.swift in Sources */,
 				167BE73027DE4B31009B20A2 /* CameraViewController.swift in Sources */,

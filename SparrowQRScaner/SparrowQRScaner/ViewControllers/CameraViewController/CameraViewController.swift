@@ -10,8 +10,6 @@ import AVFoundation
 
 class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
 
-	private(set) lazy var qrCodeButtonWidthAndHeightAnchor: CGFloat = 60.0
-
 	var videoStream = AVCaptureVideoPreviewLayer()
 
 	var session = AVCaptureSession()
@@ -20,58 +18,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 
 	private(set) lazy var popVC = PopoverTableViewController()
 
-	private(set) lazy var qrCodeButton: UIButton = {
-		let button = UIButton(type: .custom)
-		button.translatesAutoresizingMaskIntoConstraints = false
-		button.layer.cornerRadius = qrCodeButtonWidthAndHeightAnchor / 2
-		button.clipsToBounds = true
-		button.setBackgroundImage(UIImage(named: "qrCode"), for: .normal)
-		return button
-	}()
-
-	private(set) lazy var scaleHalfButton: UIButton = {
-		let button = UIButton(type: .custom)
-		button.translatesAutoresizingMaskIntoConstraints = false
-		button.layer.cornerRadius = qrCodeButtonWidthAndHeightAnchor / 2
-		button.clipsToBounds = true
-		button.backgroundColor = .separator
-		button.setTitleColor(UIColor.yellowMain, for: .selected)
-		button.setTitle("0.5", for: .normal)
-		return button
-	}()
-
-	private(set) lazy var scaleFirstButton: UIButton = {
-		let button = UIButton(type: .custom)
-		button.translatesAutoresizingMaskIntoConstraints = false
-		button.layer.cornerRadius = qrCodeButtonWidthAndHeightAnchor / 2
-		button.clipsToBounds = true
-		button.backgroundColor = .separator
-		button.setTitleColor(UIColor.yellowMain, for: .selected)
-		button.setTitle("1", for: .normal)
-		return button
-	}()
-
-	private(set) lazy var scaleSecondButton: UIButton = {
-		let button = UIButton(type: .custom)
-		button.translatesAutoresizingMaskIntoConstraints = false
-		button.layer.cornerRadius = 60
-		button.clipsToBounds = true
-		button.backgroundColor = .separator
-		button.setTitleColor(UIColor.yellowMain, for: .selected)
-		button.setTitle("3", for: .normal)
-		return button
-	}()
-
-	private(set) lazy var buttonsStackView: UIStackView = {
-		let stack = UIStackView()
-		stack.translatesAutoresizingMaskIntoConstraints = false
-		stack.backgroundColor = .separator
-		stack.layer.cornerRadius = 30
-		stack.alignment = .center
-		stack.axis = .horizontal
-		stack.distribution = .fillProportionally
-		return stack
-	}()
+	private(set) lazy var buttonsView = ButtonsCameraView()
 
 	private(set) lazy var videoView: UIView = {
 		let view = UIView()
@@ -79,13 +26,8 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 		return view
 	}()
 
-	private(set) lazy var scaleButtonView: UIView = {
-		let view = UIView()
-		return view
-	}()
-
 	private(set) lazy var qrCodeView: QRCodeView = {
-		let view = QRCodeView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+		let view = QRCodeView(frame: .zero)
 		return view
 	}()
 
@@ -148,9 +90,8 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 
 		addSubviews()
 
-		self.qrCodeButton.isHidden = true
 		self.qrCodeView.isHidden = true
-		self.scaleButtonView.isHidden = true
+		self.allQrItemsStackView.isHidden = true
 
 		constraintsInit()
 		setupGestures()
@@ -160,26 +101,8 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 	private func addSubviews() {
 
 		self.view.addSubview(videoView)
-		self.view.addSubview(qrCodeButton)
+		self.view.addSubview(buttonsView)
 		self.view.addSubview(qrCodeView)
-
-		self.scaleHalfButton.addTarget(self,
-									   action: #selector(handleScaleHalfCodeTouchUpInseide),
-									   for: .touchUpInside)
-		self.scaleFirstButton.addTarget(self,
-									   action: #selector(handleScaleFirstCodeTouchUpInseide),
-									   for: .touchUpInside)
-		self.scaleSecondButton.addTarget(self,
-									   action: #selector(handleScaleSecondCodeTouchUpInseide),
-									   for: .touchUpInside)
-
-		self.buttonsStackView.addArrangedSubview(scaleHalfButton)
-		self.buttonsStackView.addArrangedSubview(scaleFirstButton)
-		self.buttonsStackView.addArrangedSubview(scaleSecondButton)
-
-		self.scaleButtonView.addSubview(buttonsStackView)
-
-		self.view.addSubview(scaleButtonView)
 
 		self.searchStackView.addArrangedSubview(safatiImg)
 		self.searchStackView.addArrangedSubview(safaryLable)
@@ -193,7 +116,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 	private func setupGestures() {
 		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapQRCodeButtonTouchUpInseide))
 		tapGesture.numberOfTapsRequired = 1
-		qrCodeButton.addGestureRecognizer(tapGesture)
+		buttonsView.qrCodeButton.addGestureRecognizer(tapGesture)
 	}
 
 	private func setupStream() {
@@ -229,9 +152,9 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 
 		let popoverVC = popVC.popoverPresentationController
 		popoverVC?.delegate = self
-		popoverVC?.sourceView = self.qrCodeButton
-		popoverVC?.sourceRect = CGRect(x: self.qrCodeButton.bounds.minX,
-									   y: self.qrCodeButton.bounds.minY,
+		popoverVC?.sourceView = self.buttonsView.qrCodeButton
+		popoverVC?.sourceRect = CGRect(x: self.buttonsView.qrCodeButton.bounds.minX,
+									   y: self.buttonsView.qrCodeButton.bounds.minY,
 									   width: 0,
 									   height: 0)
 
@@ -242,7 +165,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 
 	func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
 		guard metadataObjects.isEmpty == false else {
-			self.qrCodeButton.isHidden = true
+			self.buttonsView.qrCodeButton.isHidden = true
 			self.qrCodeView.isHidden = true
 			self.allQrItemsStackView.isHidden = true
 			self.qrString = ""
@@ -252,7 +175,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 
 		if let object = metadataObjects.first as? AVMetadataMachineReadableCodeObject {
 			if object.type == AVMetadataObject.ObjectType.qr {
-				self.qrCodeButton.isHidden = false
+				self.buttonsView.qrCodeButton.isHidden = false
 				self.qrCodeView.isHidden = false
 				self.qrString = object.stringValue ?? ""
 				self.urlLable.text = object.stringValue ?? ""
@@ -269,53 +192,6 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 
 	}
 
-	@objc func handleScaleHalfCodeTouchUpInseide() {
-		selectedButton(number: 1)
-	}
-
-	@objc func handleScaleFirstCodeTouchUpInseide() {
-		selectedButton(number: 2)
-	}
-
-	@objc func handleScaleSecondCodeTouchUpInseide() {
-		selectedButton(number: 3)
-	}
-
-	private func selectedButton(number: Int) {
-
-		if number == 1 {
-			self.scaleHalfButton.isSelected = true
-			self.scaleHalfButton.setTitle("0,5X", for: .normal)
-
-			self.scaleFirstButton.isSelected = false
-			self.scaleFirstButton.setTitle("1", for: .normal)
-
-			self.scaleSecondButton.isSelected = false
-			self.scaleSecondButton.setTitle("3", for: .normal)
-
-		} else if number == 2 {
-
-			self.scaleHalfButton.isSelected = false
-			self.scaleHalfButton.setTitle("0,5", for: .normal)
-
-			self.scaleFirstButton.isSelected = true
-			self.scaleFirstButton.setTitle("1X", for: .normal)
-
-			self.scaleSecondButton.isSelected = false
-			self.scaleSecondButton.setTitle("3", for: .normal)
-
-		} else {
-			self.scaleHalfButton.isSelected = false
-			self.scaleHalfButton.setTitle("0,5", for: .normal)
-
-			self.scaleFirstButton.isSelected = false
-			self.scaleFirstButton.setTitle("1", for: .normal)
-
-			self.scaleSecondButton.isSelected = true
-			self.scaleSecondButton.setTitle("3X", for: .normal)
-		}
-	}
-
 	func constraintsInit() {
 		NSLayoutConstraint.activate([
 
@@ -324,18 +200,11 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 			videoView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
 			videoView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
 
-			qrCodeButton.heightAnchor.constraint(equalToConstant: qrCodeButtonWidthAndHeightAnchor),
-			qrCodeButton.widthAnchor.constraint(equalToConstant: qrCodeButtonWidthAndHeightAnchor),
-			qrCodeButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor,
-												   constant: -30.0),
-			qrCodeButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor,
-												 constant: -30.0),
-
-			scaleButtonView.centerYAnchor.constraint(equalTo: self.qrCodeButton.centerYAnchor),
-			scaleButtonView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-			scaleButtonView.widthAnchor.constraint(equalToConstant: 300.0),
-			scaleButtonView.heightAnchor.constraint(equalToConstant: qrCodeButtonWidthAndHeightAnchor)
-
+			buttonsView.topAnchor.constraint(equalTo: self.view.topAnchor),
+			buttonsView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+			buttonsView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+			buttonsView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+			
 		])
 	}
 }
