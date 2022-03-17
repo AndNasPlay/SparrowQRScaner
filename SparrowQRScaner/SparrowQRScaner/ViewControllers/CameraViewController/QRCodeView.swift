@@ -9,10 +9,13 @@ import UIKit
 
 final class QRCodeView: UIView {
 
-	let radius: CGFloat = 10.0
-	let lineLength: CGFloat = 0.08
-	let lineWidth: CGFloat = 5.0
-	let lineColor: UIColor = UIColor.yellowMain
+	private(set) lazy var radius: CGFloat = 10.0
+
+	private(set) lazy var lineLength: CGFloat = 0.08
+
+	private(set) lazy var lineWidth: CGFloat = 5.0
+
+	private(set) lazy var lineColor: UIColor = UIColor.yellowMain
 
 	var shapeLayer: CAShapeLayer!
 

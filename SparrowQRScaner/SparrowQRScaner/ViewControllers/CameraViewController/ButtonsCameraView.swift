@@ -11,6 +11,12 @@ final class ButtonsCameraView: UIView {
 
 	private(set) lazy var qrCodeButtonWidthAndHeightAnchor: CGFloat = 60.0
 
+	private(set) lazy var qrCodeButtonAnchor: CGFloat = 30.0
+
+	private(set) lazy var buttonsStackViewLeadingAnchor: CGFloat = 20.0
+
+	private(set) lazy var buttonsStackViewSpacing: CGFloat = 5.0
+
 	private(set) lazy var qrCodeButton: UIButton = {
 		let button = UIButton(type: .custom)
 		button.translatesAutoresizingMaskIntoConstraints = false
@@ -38,6 +44,7 @@ final class ButtonsCameraView: UIView {
 		button.clipsToBounds = true
 		button.backgroundColor = .separator
 		button.setTitleColor(UIColor.yellowMain, for: .selected)
+		button.isSelected = true
 		button.setTitle("1", for: .normal)
 		return button
 	}()
@@ -61,7 +68,7 @@ final class ButtonsCameraView: UIView {
 		stack.backgroundColor = .separator
 		stack.layer.cornerRadius = qrCodeButtonWidthAndHeightAnchor / 2
 		stack.distribution = .fillProportionally
-		stack.spacing = 5.0
+		stack.spacing = buttonsStackViewSpacing
 		return stack
 	}()
 
@@ -152,21 +159,21 @@ final class ButtonsCameraView: UIView {
 			qrCodeButton.heightAnchor.constraint(equalToConstant: qrCodeButtonWidthAndHeightAnchor),
 			qrCodeButton.widthAnchor.constraint(equalToConstant: qrCodeButtonWidthAndHeightAnchor),
 			qrCodeButton.trailingAnchor.constraint(equalTo: self.trailingAnchor,
-												   constant: -30.0),
+												   constant: -qrCodeButtonAnchor),
 			qrCodeButton.bottomAnchor.constraint(equalTo: self.bottomAnchor,
-												 constant: -30.0),
+												 constant: -qrCodeButtonAnchor),
 
-			scaleHalfButton.heightAnchor.constraint(equalToConstant: 60.0),
-			scaleFirstButton.heightAnchor.constraint(equalToConstant: 60.0),
-			scaleSecondButton.heightAnchor.constraint(equalToConstant: 60.0),
+			scaleHalfButton.heightAnchor.constraint(equalToConstant: qrCodeButtonWidthAndHeightAnchor),
+			scaleFirstButton.heightAnchor.constraint(equalToConstant: qrCodeButtonWidthAndHeightAnchor),
+			scaleSecondButton.heightAnchor.constraint(equalToConstant: qrCodeButtonWidthAndHeightAnchor),
 
-			scaleHalfButton.widthAnchor.constraint(equalToConstant: 60.0),
-			scaleFirstButton.widthAnchor.constraint(equalToConstant: 60.0),
-			scaleSecondButton.widthAnchor.constraint(equalToConstant: 60.0),
+			scaleHalfButton.widthAnchor.constraint(equalToConstant: qrCodeButtonWidthAndHeightAnchor),
+			scaleFirstButton.widthAnchor.constraint(equalToConstant: qrCodeButtonWidthAndHeightAnchor),
+			scaleSecondButton.widthAnchor.constraint(equalToConstant: qrCodeButtonWidthAndHeightAnchor),
 
 			buttonsStackView.centerYAnchor.constraint(equalTo: self.qrCodeButton.centerYAnchor),
 			buttonsStackView.trailingAnchor.constraint(equalTo: self.qrCodeButton.leadingAnchor,
-													   constant: -20.0)
+													   constant: -buttonsStackViewLeadingAnchor)
 		])
 	}
 }

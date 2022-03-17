@@ -10,13 +10,21 @@ import UIKit
 class PopoverTableViewCell: UITableViewCell {
 	
 	static let identifier = "PopoverTableViewCell"
-	
+
+	private(set) lazy var lablesFontofSize: CGFloat = 20.0
+
+	private(set) lazy var copyImgWidthAnchor: CGFloat = 30.0
+
+	private(set) lazy var stackViewTopBottomAnchors: CGFloat = 10.0
+
+	private(set) lazy var stackViewLeftRightAnchors: CGFloat = 20.0
+
 	private(set) lazy var copyLable: UILabel = {
 		let text = UILabel()
 		text.translatesAutoresizingMaskIntoConstraints = false
 		text.textAlignment = .left
 		text.numberOfLines = 1
-		text.font = UIFont.systemFont(ofSize: 20.0)
+		text.font = UIFont.systemFont(ofSize: lablesFontofSize)
 		text.text = "Copy"
 		text.sizeToFit()
 		return text
@@ -59,15 +67,15 @@ class PopoverTableViewCell: UITableViewCell {
 		NSLayoutConstraint.activate([
 			
 			stackView.topAnchor.constraint(equalTo: self.contentView.topAnchor,
-										   constant: 10.0),
+										   constant: stackViewTopBottomAnchors),
 			stackView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor,
-											constant: 20.0),
+											constant: stackViewLeftRightAnchors),
 			stackView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor,
-											 constant: -20.0),
+											 constant: -stackViewLeftRightAnchors),
 			stackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor,
-											  constant: -10.0),
+											  constant: -stackViewTopBottomAnchors),
 			
-			copyImg.widthAnchor.constraint(equalToConstant: 30.0)
+			copyImg.widthAnchor.constraint(equalToConstant: copyImgWidthAnchor)
 		])
 	}
 }

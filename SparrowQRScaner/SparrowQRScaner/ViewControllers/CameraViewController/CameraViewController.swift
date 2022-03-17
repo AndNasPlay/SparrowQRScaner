@@ -20,6 +20,8 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 
 	private(set) lazy var buttonsView = ButtonsCameraView()
 
+	private(set) lazy var lablesFontofSize: CGFloat = 18.0
+
 	private(set) lazy var videoView: UIView = {
 		let view = UIView()
 		view.translatesAutoresizingMaskIntoConstraints = false
@@ -37,7 +39,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 		text.textColor = .darkText
 		text.textAlignment = .center
 		text.numberOfLines = 0
-		text.font = UIFont.systemFont(ofSize: 18.0)
+		text.font = UIFont.systemFont(ofSize: lablesFontofSize)
 		text.text = "URL"
 		text.sizeToFit()
 		return text
@@ -48,7 +50,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 		text.textColor = .darkText
 		text.textAlignment = .center
 		text.numberOfLines = 1
-		text.font = UIFont.systemFont(ofSize: 20.0)
+		text.font = UIFont.systemFont(ofSize: lablesFontofSize)
 		text.text = "Search"
 		text.sizeToFit()
 		return text
