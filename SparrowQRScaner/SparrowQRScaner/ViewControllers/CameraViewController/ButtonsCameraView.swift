@@ -7,7 +7,15 @@
 
 import UIKit
 
+protocol ButtonsCameraViewDelegate {
+	func scale1X()
+	func scale2X()
+	func scale3X()
+}
+
 final class ButtonsCameraView: UIView {
+
+	var delegate: ButtonsCameraViewDelegate?
 
 	private(set) lazy var qrCodeButtonWidthAndHeightAnchor: CGFloat = 60.0
 
@@ -26,18 +34,18 @@ final class ButtonsCameraView: UIView {
 		return button
 	}()
 
-	private(set) lazy var scaleHalfButton: UIButton = {
+	private(set) lazy var scale2XButton: UIButton = {
 		let button = UIButton(type: .custom)
 		button.translatesAutoresizingMaskIntoConstraints = false
 		button.layer.cornerRadius = qrCodeButtonWidthAndHeightAnchor / 2
 		button.clipsToBounds = true
 		button.backgroundColor = .separator
 		button.setTitleColor(UIColor.yellowMain, for: .selected)
-		button.setTitle("0.5", for: .normal)
+		button.setTitle("2", for: .normal)
 		return button
 	}()
 
-	private(set) lazy var scaleFirstButton: UIButton = {
+	private(set) lazy var scale1XButton: UIButton = {
 		let button = UIButton(type: .custom)
 		button.translatesAutoresizingMaskIntoConstraints = false
 		button.layer.cornerRadius = qrCodeButtonWidthAndHeightAnchor / 2
@@ -45,11 +53,11 @@ final class ButtonsCameraView: UIView {
 		button.backgroundColor = .separator
 		button.setTitleColor(UIColor.yellowMain, for: .selected)
 		button.isSelected = true
-		button.setTitle("1", for: .normal)
+		button.setTitle("1X", for: .normal)
 		return button
 	}()
 
-	private(set) lazy var scaleSecondButton: UIButton = {
+	private(set) lazy var scale3XButton: UIButton = {
 		let button = UIButton(type: .custom)
 		button.translatesAutoresizingMaskIntoConstraints = false
 		button.layer.cornerRadius =  qrCodeButtonWidthAndHeightAnchor / 2
@@ -89,67 +97,72 @@ final class ButtonsCameraView: UIView {
 
 		self.addSubview(qrCodeButton)
 
-		self.scaleHalfButton.addTarget(self,
-									   action: #selector(handleScaleHalfCodeTouchUpInseide),
+		self.scale2XButton.addTarget(self,
+									   action: #selector(handleScale2XTouchUpInseide),
 									   for: .touchUpInside)
-		self.scaleFirstButton.addTarget(self,
-									   action: #selector(handleScaleFirstCodeTouchUpInseide),
+		self.scale1XButton.addTarget(self,
+									   action: #selector(handleScale1XButtonTouchUpInseide),
 									   for: .touchUpInside)
-		self.scaleSecondButton.addTarget(self,
-									   action: #selector(handleScaleSecondCodeTouchUpInseide),
+		self.scale3XButton.addTarget(self,
+									   action: #selector(handleScale3XButtonTouchUpInseide),
 									   for: .touchUpInside)
 
-		self.buttonsStackView.addArrangedSubview(scaleHalfButton)
-		self.buttonsStackView.addArrangedSubview(scaleFirstButton)
-		self.buttonsStackView.addArrangedSubview(scaleSecondButton)
+		self.buttonsStackView.addArrangedSubview(scale2XButton)
+		self.buttonsStackView.addArrangedSubview(scale1XButton)
+		self.buttonsStackView.addArrangedSubview(scale3XButton)
 
 		self.addSubview(buttonsStackView)
 	}
 
-	@objc func handleScaleHalfCodeTouchUpInseide() {
+	@objc func handleScale2XTouchUpInseide() {
 		selectedButton(number: 1)
+		delegate?.scale2X()
 	}
 
-	@objc func handleScaleFirstCodeTouchUpInseide() {
+	@objc func handleScale1XButtonTouchUpInseide() {
 		selectedButton(number: 2)
+		delegate?.scale1X()
 	}
 
-	@objc func handleScaleSecondCodeTouchUpInseide() {
+	@objc func handleScale3XButtonTouchUpInseide() {
 		selectedButton(number: 3)
+		delegate?.scale3X()
 	}
 
 	private func selectedButton(number: Int) {
 
 		if number == 1 {
-			self.scaleHalfButton.isSelected = true
-			self.scaleHalfButton.setTitle("0,5X", for: .normal)
+			
+			self.scale2XButton.isSelected = true
+			self.scale2XButton.setTitle("2X", for: .normal)
 
-			self.scaleFirstButton.isSelected = false
-			self.scaleFirstButton.setTitle("1", for: .normal)
+			self.scale1XButton.isSelected = false
+			self.scale1XButton.setTitle("1", for: .normal)
 
-			self.scaleSecondButton.isSelected = false
-			self.scaleSecondButton.setTitle("3", for: .normal)
+			self.scale3XButton.isSelected = false
+			self.scale3XButton.setTitle("3", for: .normal)
 
 		} else if number == 2 {
 
-			self.scaleHalfButton.isSelected = false
-			self.scaleHalfButton.setTitle("0,5", for: .normal)
+			self.scale2XButton.isSelected = false
+			self.scale2XButton.setTitle("2", for: .normal)
 
-			self.scaleFirstButton.isSelected = true
-			self.scaleFirstButton.setTitle("1X", for: .normal)
+			self.scale1XButton.isSelected = true
+			self.scale1XButton.setTitle("1X", for: .normal)
 
-			self.scaleSecondButton.isSelected = false
-			self.scaleSecondButton.setTitle("3", for: .normal)
+			self.scale3XButton.isSelected = false
+			self.scale3XButton.setTitle("3", for: .normal)
 
 		} else {
-			self.scaleHalfButton.isSelected = false
-			self.scaleHalfButton.setTitle("0,5", for: .normal)
 
-			self.scaleFirstButton.isSelected = false
-			self.scaleFirstButton.setTitle("1", for: .normal)
+			self.scale2XButton.isSelected = false
+			self.scale2XButton.setTitle("2", for: .normal)
 
-			self.scaleSecondButton.isSelected = true
-			self.scaleSecondButton.setTitle("3X", for: .normal)
+			self.scale1XButton.isSelected = false
+			self.scale1XButton.setTitle("1", for: .normal)
+
+			self.scale3XButton.isSelected = true
+			self.scale3XButton.setTitle("3X", for: .normal)
 		}
 	}
 
@@ -163,13 +176,13 @@ final class ButtonsCameraView: UIView {
 			qrCodeButton.bottomAnchor.constraint(equalTo: self.bottomAnchor,
 												 constant: -qrCodeButtonAnchor),
 
-			scaleHalfButton.heightAnchor.constraint(equalToConstant: qrCodeButtonWidthAndHeightAnchor),
-			scaleFirstButton.heightAnchor.constraint(equalToConstant: qrCodeButtonWidthAndHeightAnchor),
-			scaleSecondButton.heightAnchor.constraint(equalToConstant: qrCodeButtonWidthAndHeightAnchor),
+			scale2XButton.heightAnchor.constraint(equalToConstant: qrCodeButtonWidthAndHeightAnchor),
+			scale1XButton.heightAnchor.constraint(equalToConstant: qrCodeButtonWidthAndHeightAnchor),
+			scale3XButton.heightAnchor.constraint(equalToConstant: qrCodeButtonWidthAndHeightAnchor),
 
-			scaleHalfButton.widthAnchor.constraint(equalToConstant: qrCodeButtonWidthAndHeightAnchor),
-			scaleFirstButton.widthAnchor.constraint(equalToConstant: qrCodeButtonWidthAndHeightAnchor),
-			scaleSecondButton.widthAnchor.constraint(equalToConstant: qrCodeButtonWidthAndHeightAnchor),
+			scale2XButton.widthAnchor.constraint(equalToConstant: qrCodeButtonWidthAndHeightAnchor),
+			scale1XButton.widthAnchor.constraint(equalToConstant: qrCodeButtonWidthAndHeightAnchor),
+			scale3XButton.widthAnchor.constraint(equalToConstant: qrCodeButtonWidthAndHeightAnchor),
 
 			buttonsStackView.centerYAnchor.constraint(equalTo: self.qrCodeButton.centerYAnchor),
 			buttonsStackView.trailingAnchor.constraint(equalTo: self.qrCodeButton.leadingAnchor,

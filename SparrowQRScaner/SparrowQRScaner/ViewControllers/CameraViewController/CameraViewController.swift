@@ -22,6 +22,8 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 
 	private(set) lazy var lablesFontofSize: CGFloat = 18.0
 
+	private(set) lazy var allQrItemsStackViewCornerRadius: CGFloat = 40.0
+
 	private(set) lazy var videoView: UIView = {
 		let view = UIView()
 		view.translatesAutoresizingMaskIntoConstraints = false
@@ -75,14 +77,14 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 
 	private(set) lazy var allQrItemsStackView: UIStackView = {
 		let stack = UIStackView(frame: CGRect(x: 50.0,
-											 y: self.qrCodeView.bounds.maxY + 5.0,
-											 width: self.view.bounds.width - 80.0,
-											 height: 100.0))
+											  y: self.qrCodeView.bounds.maxY + 5.0,
+											  width: self.view.bounds.width - 80.0,
+											  height: 100.0))
 		stack.alignment = .center
 		stack.axis = .vertical
 		stack.distribution = .fill
 		stack.backgroundColor = .yellowMain
-		stack.layer.cornerRadius = 40.0
+		stack.layer.cornerRadius = allQrItemsStackViewCornerRadius
 		return stack
 	}()
 
@@ -94,10 +96,11 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 
 		self.qrCodeView.isHidden = true
 		self.allQrItemsStackView.isHidden = true
+		self.buttonsView.delegate = self
 
 		constraintsInit()
 		setupGestures()
-		setupStream()
+		setupStream(zoomFactor: 1.0)
 	}
 
 	private func addSubviews() {
@@ -113,6 +116,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 		self.allQrItemsStackView.addArrangedSubview(urlLable)
 
 		self.view.addSubview(allQrItemsStackView)
+		self.buttonsView.qrCodeButton.isHidden = true
 	}
 
 	private func setupGestures() {
@@ -121,31 +125,113 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 		buttonsView.qrCodeButton.addGestureRecognizer(tapGesture)
 	}
 
-	private func setupStream() {
+	private func setupStream(zoomFactor: CGFloat) {
 
 		guard let captureDevice = AVCaptureDevice.default(for: AVMediaType.video) else { return }
 
+		if session.inputs.isEmpty {
+
+			do {
+
+				let input = try AVCaptureDeviceInput(device: captureDevice)
+
+				session.addInput(input)
+			}
+			catch {
+				print("input error")
+			}
+
+			do {
+				try captureDevice.lockForConfiguration()
+				captureDevice.videoZoomFactor = zoomFactor
+				captureDevice.unlockForConfiguration()
+
+			} catch {
+				print(error.localizedDescription)
+			}
+
+			let output = AVCaptureMetadataOutput()
+			session.addOutput(output)
+
+			output.setMetadataObjectsDelegate(self,
+											  queue: DispatchQueue.main)
+			output.metadataObjectTypes = [AVMetadataObject.ObjectType.qr]
+
+			videoStream = AVCaptureVideoPreviewLayer(session: session)
+			videoStream.videoGravity = AVLayerVideoGravity.resizeAspectFill
+			videoStream.frame = view.layer.bounds
+			videoStream.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
+			videoView.layer.addSublayer(videoStream)
+
+			session.startRunning()
+
+		} else {
+
+			session.stopRunning()
+
+			guard let lastInput = session.inputs.last else {return}
+			guard let lastOutput = session.outputs.last else {return}
+
+			session.removeInput(lastInput)
+			session.removeOutput(lastOutput)
+
+			do {
+
+				let newInput = try AVCaptureDeviceInput(device: captureDevice)
+
+				if session.canAddInput(newInput) {
+					session.addInput(newInput)
+				}
+			}
+
+			catch {
+				print("input error")
+			}
+
+			do {
+				try captureDevice.lockForConfiguration()
+				captureDevice.videoZoomFactor = zoomFactor
+				captureDevice.unlockForConfiguration()
+
+			} catch {
+				print(error.localizedDescription)
+			}
+
+			let output = AVCaptureMetadataOutput()
+
+			if session.canAddOutput(output) {
+				session.addOutput(output)
+				output.setMetadataObjectsDelegate(self,
+												  queue: DispatchQueue.main)
+				output.metadataObjectTypes = [AVMetadataObject.ObjectType.qr]
+
+				videoStream = AVCaptureVideoPreviewLayer(session: session)
+				videoStream.videoGravity = AVLayerVideoGravity.resizeAspectFill
+				videoStream.frame = view.layer.bounds
+				videoStream.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
+				videoView.layer.addSublayer(videoStream)
+
+				session.startRunning()
+			}
+		}
+
+	}
+
+	private func updateStreamScale(zoomFactor: CGFloat) -> AVCaptureDevice? {
+
+		guard let captureDevice = AVCaptureDevice.default(for: AVMediaType.video) else { return nil}
+
 		do {
-			let input = try AVCaptureDeviceInput(device: captureDevice)
-			session.addInput(input)
+			try captureDevice.lockForConfiguration()
+			captureDevice.videoZoomFactor = zoomFactor
+			captureDevice.unlockForConfiguration()
+
+			return captureDevice
+
+		} catch {
+			print(error.localizedDescription)
 		}
-		catch {
-			print("input error")
-		}
-
-		let output = AVCaptureMetadataOutput()
-		session.addOutput(output)
-
-		output.setMetadataObjectsDelegate(self,
-										  queue: DispatchQueue.main)
-		output.metadataObjectTypes = [AVMetadataObject.ObjectType.qr]
-
-		videoStream = AVCaptureVideoPreviewLayer(session: session)
-		videoStream.videoGravity = AVLayerVideoGravity.resizeAspectFill
-		videoStream.frame = view.layer.bounds
-		videoView.layer.addSublayer(videoStream)
-
-		session.startRunning()
+		return nil
 	}
 
 	@objc func handleTapQRCodeButtonTouchUpInseide() {
@@ -160,7 +246,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 									   width: 0,
 									   height: 0)
 
-		popVC.preferredContentSize = CGSize(width: 300.0, height: 50.0)
+		popVC.preferredContentSize = .zero
 
 		self.present(popVC, animated: true)
 	}
@@ -186,9 +272,9 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 				guard let frameQrCode = getFrameQrCode?.bounds else { return }
 				self.qrCodeView.frame = frameQrCode
 				self.allQrItemsStackView.frame = CGRect(x: 50.0,
-												   y: frameQrCode.maxY + 5.0,
-												width: self.view.bounds.width - 100.0,
-												height: 80.0)
+														y: frameQrCode.maxY + 5.0,
+														width: self.view.bounds.width - 100.0,
+														height: 80.0)
 			}
 		}
 
@@ -216,4 +302,26 @@ extension CameraViewController: UIPopoverPresentationControllerDelegate {
 	func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
 		return .none
 	}
+}
+
+extension CameraViewController: ButtonsCameraViewDelegate {
+
+	func scale1X() {
+
+		setupStream(zoomFactor: 1.0)
+
+	}
+
+	func scale2X() {
+
+		setupStream(zoomFactor: 2.0)
+
+	}
+
+	func scale3X() {
+
+		setupStream(zoomFactor: 3.0)
+
+	}
+
 }
