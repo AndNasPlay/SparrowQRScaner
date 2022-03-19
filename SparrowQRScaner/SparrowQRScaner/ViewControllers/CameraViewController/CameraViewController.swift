@@ -90,8 +90,6 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		self.view.backgroundColor = .white
-
 		addSubviews()
 
 		self.qrCodeView.isHidden = true
