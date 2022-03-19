@@ -4,6 +4,8 @@ Simple qr code scanner.
 
 ## About
 
+![alt text](https://github.com/AndNasPlay/SparrowQRScaner/blob/main/Img%20presentation/QRCodeScanerPresentation.png "screen")
+
 ## Features
 
 Swift Programming Language, Custom UITableViewCell, UIKit, AVFoundation, SafariServices.
