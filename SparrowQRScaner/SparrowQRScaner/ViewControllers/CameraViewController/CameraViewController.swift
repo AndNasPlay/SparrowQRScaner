@@ -98,7 +98,7 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 
 		constraintsInit()
 		setupGestures()
-		setupStream(zoomFactor: 1.0)
+		setupStream(zoomFactor: ZoomButton.firstZoom.rawValue)
 	}
 
 	private func addSubviews() {
@@ -215,23 +215,6 @@ class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
 
 	}
 
-	private func updateStreamScale(zoomFactor: CGFloat) -> AVCaptureDevice? {
-
-		guard let captureDevice = AVCaptureDevice.default(for: AVMediaType.video) else { return nil}
-
-		do {
-			try captureDevice.lockForConfiguration()
-			captureDevice.videoZoomFactor = zoomFactor
-			captureDevice.unlockForConfiguration()
-
-			return captureDevice
-
-		} catch {
-			print(error.localizedDescription)
-		}
-		return nil
-	}
-
 	@objc func handleTapQRCodeButtonTouchUpInseide() {
 		popVC.qrTableViewHeader = self.qrString
 		popVC.modalPresentationStyle = .popover
@@ -306,19 +289,19 @@ extension CameraViewController: ButtonsCameraViewDelegate {
 
 	func scale1X() {
 
-		setupStream(zoomFactor: 1.0)
+		setupStream(zoomFactor: ZoomButton.firstZoom.rawValue)
 
 	}
 
 	func scale2X() {
 
-		setupStream(zoomFactor: 2.0)
+		setupStream(zoomFactor: ZoomButton.secondZoom.rawValue)
 
 	}
 
 	func scale3X() {
 
-		setupStream(zoomFactor: 3.0)
+		setupStream(zoomFactor: ZoomButton.theThidZoom.rawValue)
 
 	}
 

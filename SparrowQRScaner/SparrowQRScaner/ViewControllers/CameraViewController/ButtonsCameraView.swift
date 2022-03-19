@@ -133,9 +133,9 @@ final class ButtonsCameraView: UIView {
 
 		if number == 1 {
 
-			self.scale2XButton.setTitle("2X", for: .normal)
-			self.scale1XButton.setTitle("1", for: .normal)
-			self.scale3XButton.setTitle("3", for: .normal)
+			self.scale2XButton.setTitle("\(Int(ZoomButton.secondZoom.rawValue))X", for: .normal)
+			self.scale1XButton.setTitle("\(Int(ZoomButton.firstZoom.rawValue))", for: .normal)
+			self.scale3XButton.setTitle("\(Int(ZoomButton.theThidZoom.rawValue))", for: .normal)
 
 			self.scale2XButton.isEnabled = false
 			self.scale1XButton.isEnabled = true
@@ -143,9 +143,9 @@ final class ButtonsCameraView: UIView {
 
 		} else if number == 2 {
 
-			self.scale2XButton.setTitle("2", for: .normal)
-			self.scale1XButton.setTitle("1X", for: .normal)
-			self.scale3XButton.setTitle("3", for: .normal)
+			self.scale2XButton.setTitle("\(Int(ZoomButton.secondZoom.rawValue))", for: .normal)
+			self.scale1XButton.setTitle("\(Int(ZoomButton.firstZoom.rawValue))X", for: .normal)
+			self.scale3XButton.setTitle("\(Int(ZoomButton.theThidZoom.rawValue))", for: .normal)
 
 			self.scale2XButton.isEnabled = true
 			self.scale1XButton.isEnabled = false
@@ -153,9 +153,9 @@ final class ButtonsCameraView: UIView {
 
 		} else {
 
-			self.scale2XButton.setTitle("2", for: .normal)
-			self.scale1XButton.setTitle("1", for: .normal)
-			self.scale3XButton.setTitle("3X", for: .normal)
+			self.scale2XButton.setTitle("\(Int(ZoomButton.secondZoom.rawValue))", for: .normal)
+			self.scale1XButton.setTitle("\(Int(ZoomButton.firstZoom.rawValue))", for: .normal)
+			self.scale3XButton.setTitle("\(Int(ZoomButton.theThidZoom.rawValue))X", for: .normal)
 
 			self.scale2XButton.isEnabled = true
 			self.scale1XButton.isEnabled = true
